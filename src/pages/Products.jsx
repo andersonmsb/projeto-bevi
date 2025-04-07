@@ -263,7 +263,7 @@ export default function Products() {
                         <tr className="text-center" key={p.id}>
                           <td><strong>{p.name}</strong></td>
                           <td className="d-none d-sm-table-cell">{p.description}</td>
-                          <td>R$ {p.price}</td>
+                          <td>R$ {parseFloat(p.price).toFixed(2)}</td>
                           {/* inicio status e muda de cor*/}
                           <td>
                             <span style={{

@@ -1,31 +1,46 @@
+### Projeto Bevi para entrevista
 
-### Projeto Bevi teste entrevista
+sistema web feito em **React.js** que permite o gerenciamento de produtos com autenticação de usuários, utilizando uma API para realizar operações CRUD.
 
+### Funcionalidades
+
+Login com autenticação via JWT
+Listagem de produtos
+Cadastro de novos produtos
+Edição de produtos existentes
+Exclusão de produtos
+Controle de status e quantidade em estoque
+Interface com Bootstrap
+
+### Tecnologias e Bibliotecas Utilizadas
+
+- **React.js**
+- **React Router Dom**
+- **Axios**
+- **Bootstrap**
+- **Bootstrap Icons**
+- **Jest + React Testing Library**
+- **Babel + Webpack (via CRA)**
+
+### Como rodar o projeto
 
 ### Requisitos
+Node.js (v18 ou superior)
+NPM ou Yarn
 
-node v22.12.0
-npm 10.9.2
+### 1. Clone o repositório
 
-### Inicialização
+```bash
+git clone https://github.com/andersonmsb/projeto-bevi
+cd projeto-bevi
+npm install
+npm start
+```
+### Rodar os testes
+npm test
 
-1. git clone https://github.com/andersonmsb/projeto-bevi
-2. npm install
-3. npm start
 
-### Recursos
 
-React.js
-Router
-Bootstrap
-axios
-sweetalert2
-
-###
-
-routes.js 
-tenta acessar /produtos
-verifica: se tem token
 
 
 

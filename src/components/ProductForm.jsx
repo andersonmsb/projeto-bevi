@@ -147,7 +147,7 @@ export default function ProductForm({ onSubmit, product, show, onClose }) {
                 <div className="input-group">
                   <span className="input-group-text">R$</span>
                   <input 
-                    type="text" 
+                    type="number" 
                     className="form-control" 
                     id="price" 
                     name="price" 
