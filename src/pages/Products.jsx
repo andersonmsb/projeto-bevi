@@ -175,13 +175,23 @@ export default function Products() {
 
   // inicio função atualizar quantidade do estoque
   const updateStock = (product, newQuantity) => {
-    const updatedProduct = { ...product, stock_quantity: newQuantity };
-
+    // Garante que o estoque não fique negativo
+    if (newQuantity < 0) newQuantity = 0;
+  
+    // Atualiza o status com base na quantidade
+    const updatedProduct = {
+      ...product,
+      stock_quantity: newQuantity,
+      status: newQuantity === 0 ? 3 : product.status === 3 ? 1 : product.status
+    };
+  
     api.put("/product/update", updatedProduct)
       .then(() => {
         setProducts((prevProducts) =>
           prevProducts.map((p) =>
-            p.id === product.id ? { ...p, stock_quantity: newQuantity } : p
+            p.id === product.id
+              ? { ...p, stock_quantity: newQuantity, status: updatedProduct.status }
+              : p
           )
         );
       })
@@ -189,6 +199,7 @@ export default function Products() {
         centerAlert("error", "Erro", "Falha ao atualizar estoque");
       });
   };
+  
 // fim função atualizar quantidade do estoque
 
 
@@ -273,7 +284,7 @@ export default function Products() {
                                 'red',
                                 fontWeight: 'bold'
                                 }}>
-                              {p.status === 1 ? 'Em estoque' : p.status === 2 ? 'Em reposição' : 'Em falta'}
+                              {p.status === 1 ? 'Em Estoque' : p.status === 2 ? 'Em Reposição' : 'Em Falta'}
                             </span>
                           </td>
                           {/* fim status e muda de cor*/}
