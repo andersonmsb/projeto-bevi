@@ -66,6 +66,19 @@ export default function Products() {
 
   // inicio função criar produto e alerta
   const productCreate = (data) => {
+    const nomeExiste = products.some(
+      (p) => p.name.trim().toLowerCase() === data.name.trim().toLowerCase()
+    );
+  
+    if (nomeExiste) {
+      centerAlert(
+        'warning',
+        'Nome duplicado!',
+        'Já existe um produto com esse nome.'
+      );
+      return;
+    }
+  
     api.post("/product/create", data)
       .then(() => {
         centerAlert(
@@ -88,6 +101,21 @@ export default function Products() {
 
   // inicio função atualiza produto e alerta
   const productUpdate = (data) => {
+    const nomeExiste = products.some(
+      (p) =>
+        p.name.trim().toLowerCase() === data.name.trim().toLowerCase() &&
+        p.id !== data.id // Ignora o próprio produto que está sendo editado
+    );
+  
+    if (nomeExiste) {
+      centerAlert(
+        'warning',
+        'Nome duplicado!',
+        'Já existe outro produto com esse nome.'
+      );
+      return;
+    }
+  
     api.put("/product/update", data)
       .then(() => {
         centerAlert(
@@ -106,7 +134,7 @@ export default function Products() {
           'Falha ao atualizar produto'
         );
       });
-  };
+  };  
   // fim função atualiza produto e alerta
 
   // inicio função deleta produto e alerta
@@ -144,6 +172,25 @@ export default function Products() {
     });
   };
   // fim função deleta produto e alerta
+
+  // inicio função atualizar quantidade do estoque
+  const updateStock = (product, newQuantity) => {
+    const updatedProduct = { ...product, stock_quantity: newQuantity };
+
+    api.put("/product/update", updatedProduct)
+      .then(() => {
+        setProducts((prevProducts) =>
+          prevProducts.map((p) =>
+            p.id === product.id ? { ...p, stock_quantity: newQuantity } : p
+          )
+        );
+      })
+      .catch(() => {
+        centerAlert("error", "Erro", "Falha ao atualizar estoque");
+      });
+  };
+// fim função atualizar quantidade do estoque
+
 
   // inicio abre modal
   const openModal = (product = null) => {
@@ -230,7 +277,36 @@ export default function Products() {
                             </span>
                           </td>
                           {/* fim status e muda de cor*/}
-                          <td className="d-none d-sm-table-cell">{p.status === 1 ? p.stock_quantity : 0}</td>
+                          
+                          {/* inicio estoque */}
+                          <td className="d-none d-sm-table-cell">
+                            {p.status === 1 ? (
+                              <div className="d-flex justify-content-center align-items-center gap-1">
+                                {/* inicio botão decremento */}
+                                <button
+                                  className="btn btn-sm btn-outline-danger"
+                                  onClick={() => updateStock(p, p.stock_quantity - 1)}
+                                  disabled={p.stock_quantity <= 0}
+                                >
+                                  <i className="bi bi-dash"></i>
+                                </button>
+                                {/* fim botão decremento */}
+                                <span className="mx-2 fw-bold">{p.stock_quantity}</span>
+                                {/* inicio botão incremento */}
+                                <button
+                                  className="btn btn-sm btn-outline-success"
+                                  onClick={() => updateStock(p, p.stock_quantity + 1)}
+                                >
+                                  <i className="bi bi-plus"></i>
+                                </button>
+                                {/* fim botão incremento */}
+                              </div>
+                            ) : (
+                              <span className="text-muted">0</span>
+                            )}
+                          </td>
+                          {/* fim estoque*/}
+
                           {/* inicio botões de ação*/}
                           <td>
                             <div className="d-flex justify-content-center gap-1">
