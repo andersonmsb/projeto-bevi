@@ -11,17 +11,22 @@ export default function Products() {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
+  // inicio buscar lista de produtos
   const fetchProducts = () => {
     api.post("/product/list")
       .then((res) => setProducts(res.data.data))
       .catch((err) => console.error(err));
   };
+  // fim buscar lista de produtos
 
+  // inicio carregar dados
   useEffect(() => {
     fetchProducts();
   }, []);
+  // fim carregar dados
 
-  const showCenteredAlert = (icon, title, text) => {
+  // inicio alerta estilizado centralizado
+  const centerAlert = (icon, title, text) => {
     Swal.fire({
       position: 'center',
       icon,
@@ -31,8 +36,10 @@ export default function Products() {
       confirmButtonColor: '#3085d6',
     });
   };
+  // fim alerta estilizado centralizado
 
-  const handleLogout = () => {
+  // inicio função deslogar usuario e alerta
+  const userLogout = () => {
     Swal.fire({
       position: 'center',
       title: 'Tem certeza?',
@@ -47,7 +54,7 @@ export default function Products() {
       if (result.isConfirmed) {
         localStorage.removeItem("token");
         navigate("/");
-        showCenteredAlert(
+        centerAlert(
           'success',
           'Desconectado!',
           'Você foi desconectado com sucesso.'
@@ -55,11 +62,13 @@ export default function Products() {
       }
     });
   };
+  // fim função deslogar usuario e alerta
 
-  const handleCreate = (data) => {
+  // inicio função criar produto e alerta
+  const productCreate = (data) => {
     api.post("/product/create", data)
       .then(() => {
-        showCenteredAlert(
+        centerAlert(
           'success',
           'Sucesso!',
           'Produto criado com sucesso!'
@@ -68,18 +77,20 @@ export default function Products() {
         setShowModal(false);
       })
       .catch(() => {
-        showCenteredAlert(
+        centerAlert(
           'error',
           'Erro',
           'Falha ao criar produto'
         );
       });
   };
+  // fim função criar produto e alerta
 
-  const handleUpdate = (data) => {
+  // inicio função atualiza produto e alerta
+  const productUpdate = (data) => {
     api.put("/product/update", data)
       .then(() => {
-        showCenteredAlert(
+        centerAlert(
           'success',
           'Sucesso!',
           'Produto atualizado com sucesso!'
@@ -89,15 +100,17 @@ export default function Products() {
         fetchProducts();
       })
       .catch(() => {
-        showCenteredAlert(
+        centerAlert(
           'error',
           'Erro',
           'Falha ao atualizar produto'
         );
       });
   };
+  // fim função atualiza produto e alerta
 
-  const handleDelete = (id) => {
+  // inicio função deleta produto e alerta
+  const productDelete = (id) => {
     Swal.fire({
       position: 'center',
       title: 'Tem certeza?',
@@ -112,7 +125,7 @@ export default function Products() {
       if (result.isConfirmed) {
         api.delete("/product/delete", { data: { id } })
           .then(() => {
-            showCenteredAlert(
+            centerAlert(
               'success',
               'Excluído!',
               'O produto foi excluído.'
@@ -120,7 +133,7 @@ export default function Products() {
             setProducts(prevProducts => prevProducts.filter(p => p.id !== id));
           })
           .catch(() => {
-            showCenteredAlert(
+            centerAlert(
               'error',
               'Erro',
               'Falha ao excluir produto'
@@ -130,38 +143,46 @@ export default function Products() {
       }
     });
   };
+  // fim função deleta produto e alerta
 
+  // inicio abre modal
   const openModal = (product = null) => {
     setEditing(product);
     setShowModal(true);
   };
+  // fim abre modal
 
+  // inicio fecha modal
   const closeModal = () => {
     setEditing(null);
     setShowModal(false);
   };
+  // fim fecha modal
 
   return (
     <div className="container-fluid d-flex flex-column min-vh-100 px-0">
-      {/* Cabeçalho */}
+      {/*inicio Cabeçalho */}
       <div className="container d-flex justify-content-end gap-2 my-2 px-3">
         <button onClick={() => navigate("/usuario")} className="btn btn-outline-primary btn-sm">
           <i className="bi bi-person me-1"></i>Início
         </button>
-        <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">
+        <button onClick={userLogout} className="btn btn-outline-danger btn-sm">
           <i className="bi bi-box-arrow-right me-1"></i>Sair
         </button>
       </div>
-      
-      <header className="text-center my-3 px-3">
-        <h1 className="h4 fw-bold">Gestão de Produtos</h1>
-      </header>
+      {/*fim Cabeçalho */}
 
-      {/* Área Principal */}
+      {/* inicio titulo*/}
+      <header className="text-center my-3 px-3">
+        <h1 className="fw-bold">Gestão de Produtos</h1>
+      </header>
+       {/* fim titulo*/}
+
+     
       <main className="flex-grow-1 d-flex flex-column justify-content-center px-3">
-        {/* Container da Tabela */}
-        <div className="container-fluid px-0">
-          {/* Botões */}
+       
+        <div className=" container container-fluid px-0">
+          {/* inicio botão novo produto */}
           <div className="d-flex justify-content-between mb-3">
             <div></div>
             <div className="d-flex gap-2">
@@ -170,12 +191,14 @@ export default function Products() {
               </button>
             </div>
           </div>
+          {/* fim botão novo produto*/}
 
-          {/* Tabela */}
+          {/*inicio tabela */}
           <div className="card shadow">
             <div className="card-body p-0">
               <div className="table-responsive">
                 <table className="table table-striped table-hover m-0">
+                  {/* inicio cabeçalho*/}
                   <thead>
                     <tr className="text-center">
                       <th>Nome</th>
@@ -186,6 +209,7 @@ export default function Products() {
                       <th>Ações</th>
                     </tr>
                   </thead>
+                  {/* fim cabeçalho*/}
                   <tbody>
                     {products.length > 0 ? (
                       products.map((p) => (
@@ -193,6 +217,7 @@ export default function Products() {
                           <td><strong>{p.name}</strong></td>
                           <td className="d-none d-sm-table-cell">{p.description}</td>
                           <td>R$ {p.price}</td>
+                          {/* inicio status e muda de cor*/}
                           <td>
                             <span style={{
                                 color: 
@@ -204,19 +229,22 @@ export default function Products() {
                               {p.status === 1 ? 'Em estoque' : p.status === 2 ? 'Em reposição' : 'Em falta'}
                             </span>
                           </td>
+                          {/* fim status e muda de cor*/}
                           <td className="d-none d-sm-table-cell">{p.status === 1 ? p.stock_quantity : 0}</td>
+                          {/* inicio botões de ação*/}
                           <td>
                             <div className="d-flex justify-content-center gap-1">
                               <button onClick={() => openModal(p)} className="btn btn-sm btn-warning">
                                 <i className="bi bi-pencil"></i>
                                 <span className="d-none d-sm-inline ms-1">Editar</span>
                               </button>
-                              <button onClick={() => handleDelete(p.id)} className="btn btn-sm btn-danger">
+                              <button onClick={() => productDelete(p.id)} className="btn btn-sm btn-danger">
                                 <i className="bi bi-trash"></i>
                                 <span className="d-none d-sm-inline ms-1">Excluir</span>
                               </button>
                             </div>
                           </td>
+                          {/* fim botões de ação*/}
                         </tr>
                       ))
                     ) : (
@@ -233,16 +261,18 @@ export default function Products() {
               </div>
             </div>
           </div>
+          {/* fim tabela */}
         </div>
       </main>
 
-      {/* Modal */}
+      {/*inicio Modal */}
       <ProductForm
         show={showModal}
         onClose={closeModal}
-        onSubmit={editing ? handleUpdate : handleCreate}
+        onSubmit={editing ? productUpdate : productCreate}
         product={editing}
       />
+      {/*fim Modal */}
     </div>
   )
 }

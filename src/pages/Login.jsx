@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // inicio autenticação
+   // inicio autenticação
   const authenticate = async (evento) => {
     evento.preventDefault();
     try {
@@ -15,13 +16,25 @@ export default function Login() {
       localStorage.setItem("token", res.data.access_token);
       navigate("/usuario");
     } catch (err) {
-      alert("Email ou senha inválidos");
+      // inicio alerta estilizado erro de login
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Email ou senha inválidos!',
+        confirmButtonColor: '#0d6efd',
+        background: '#fff',
+        color: '#212529',
+        customClass: {
+          confirmButton: 'btn btn-primary'
+        }
+      });
+      // fim alerta estilizado erro de login
     }
   };
   // fim autenticação
 
   return (
-    // inicio div centralizada
+     // inicio div centralizada
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card shadow-lg" style={{ width: "400px" }}>
         <div className="card-body p-4">
@@ -63,14 +76,16 @@ export default function Login() {
 
             {/* inicio button entrar */}
             <div className="d-grid">
-              <button type="submit" className="btn btn-primary btn-lg fw-bold">Entrar</button>
+              <button type="submit" className="btn btn-primary btn-lg fw-bold">
+                Entrar
+              </button>
             </div>
             {/* fim button entrar */}
           </form>
-          {/* fim formulario */}
+           {/* fim formulario */}
         </div>
       </div>
     </div>
-    // fim div centralizada
+     // fim div centralizada
   );
 }

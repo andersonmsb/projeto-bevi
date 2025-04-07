@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Products from "./pages/Products";
 import Profile from "./pages/Profile";
 
-// verifica se está autenticado
+// verificar se está autenticado
 const isAuthenticated = () => !!localStorage.getItem("token");
 
 export default function MainRoutes() {

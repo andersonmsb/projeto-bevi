@@ -7,7 +7,8 @@ export default function Profile() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  const showCenteredAlert = (icon, title, text) => {
+  // inicio alerta estilizado centralizado
+  const centerAlert = (icon, title, text) => {
       Swal.fire({
         position: 'center',
         icon,
@@ -17,7 +18,9 @@ export default function Profile() {
         confirmButtonColor: '#3085d6',
       });
     };
+    // fim alerta estilizado centralizado
 
+  // inicio alerta deslogar 
   const handleLogout = () => {
       Swal.fire({
         position: 'center',
@@ -33,7 +36,7 @@ export default function Profile() {
         if (result.isConfirmed) {
           localStorage.removeItem("token");
           navigate("/");
-          showCenteredAlert(
+          centerAlert(
             'success',
             'Desconectado!',
             'Você foi desconectado com sucesso.'
@@ -41,17 +44,19 @@ export default function Profile() {
         }
       });
     };
+    // fim alerta deslogar 
 
+  // inicio verifica autenticação
   useEffect(() => {
     api.post("/auth/me")
       .then((res) => setUser(res.data))
       .catch((err) => console.error(err));
   }, []);
+  // fim verifica autenticação
 
 
   return user ? (
 
-   
     <div className="container position-relative d-flex justify-content-center align-items-center vh-100 flex-column">
     {/* Inicio Botão Sair no topo direito */}
     <div className="position-absolute top-0 end-0 p-3">
@@ -63,12 +68,18 @@ export default function Profile() {
   
     {/*Inicio Conteúdo centralizado */}
     <div className="text-center">
-      <h2 className="fw-bold mb-4">Bem-vindo, {user.name}</h2>
+      {/*Inicio titulo */}
+      <h2 className="fw-bold">Bem-vindo {user.name}</h2>
+      {/*fim titulo */}
+      <h5 className="mb-5">Gerencie seus produtos, controle seu estoque e muito mais, <br/> de forma fácil e rápida.</h5>
+
+      {/*Inicio button */}
       <div>
         <button type="submit" className="btn btn-primary btn-lg fw-bold" onClick={() => navigate("/produtos")}>
           <i className="bi bi-bag me-1"></i>Acessar Produtos
         </button>
       </div>
+      {/*fim button */}
     </div>
     {/*Fim Conteúdo centralizado */}
   </div>
