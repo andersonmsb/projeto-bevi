@@ -4,13 +4,13 @@ sistema web feito em **React.js** que permite o gerenciamento de produtos com au
 
 ### Funcionalidades
 
-Login com autenticação via JWT
-Listagem de produtos
-Cadastro de novos produtos
-Edição de produtos existentes
-Exclusão de produtos
-Controle de status e quantidade em estoque
-Interface com Bootstrap
+# Login com autenticação via JWT
+# Listagem de produtos
+# Cadastro de novos produtos
+# Edição de produtos existentes
+# Exclusão de produtos
+# Controle de status e quantidade em estoque
+# Interface com Bootstrap
 
 ### Tecnologias e Bibliotecas Utilizadas
 
