@@ -7,37 +7,48 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  // inicio autenticação
+  const authenticate = async (evento) => {
+    evento.preventDefault();
     try {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.access_token);
-      navigate("/produtos");
+      navigate("/usuario");
     } catch (err) {
       alert("Email ou senha inválidos");
     }
   };
+  // fim autenticação
 
   return (
+    // inicio div centralizada
     <div className="container d-flex justify-content-center align-items-center vh-100">
       <div className="card shadow-lg" style={{ width: "400px" }}>
         <div className="card-body p-4">
-          <h2 className="card-title text-center mb-4">Login</h2>
-          <form onSubmit={handleLogin}>
+          {/* inicio title login */}
+          <h2 className="card-title text-center mb-4 fw-bold">Login</h2>
+          {/* fim title login */}
+
+          {/* inicio formulario */}
+          <form onSubmit={authenticate}>
+            {/* inicio input email*/}
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
+              <label htmlFor="email" className="form-label fw-bold">E-mail</label>
               <input
                 type="email"
                 className="form-control"
                 id="email"
-                placeholder="seu@email.com"
+                placeholder="Digite seu e-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
+            {/* fim input email */}
+
+            {/* inicio input senha */}
             <div className="mb-4">
-              <label htmlFor="password" className="form-label">Senha</label>
+              <label htmlFor="password" className="form-label fw-bold">Senha</label>
               <input
                 type="password"
                 className="form-control"
@@ -48,17 +59,18 @@ export default function Login() {
                 required
               />
             </div>
+            {/* fim input senha */}
+
+            {/* inicio button entrar */}
             <div className="d-grid">
-              <button 
-                type="submit" 
-                className="btn btn-primary btn-lg"
-              >
-                Entrar
-              </button>
+              <button type="submit" className="btn btn-primary btn-lg fw-bold">Entrar</button>
             </div>
+            {/* fim button entrar */}
           </form>
+          {/* fim formulario */}
         </div>
       </div>
     </div>
+    // fim div centralizada
   );
 }

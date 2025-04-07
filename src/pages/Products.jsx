@@ -3,6 +3,7 @@ import api from "../services/api";
 import ProductForm from "../components/ProductForm";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -13,7 +14,7 @@ export default function Products() {
   const fetchProducts = () => {
     api.post("/product/list")
       .then((res) => setProducts(res.data.data))
-      .catch((err) => console.error(err)); // Removida a mensagem de erro
+      .catch((err) => console.error(err));
   };
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export default function Products() {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, sair!',
+      confirmButtonText: 'Sim',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -105,7 +106,7 @@ export default function Products() {
       showCancelButton: true,
       confirmButtonColor: '#d33',
       cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sim, excluir!',
+      confirmButtonText: 'Sim',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
@@ -141,52 +142,47 @@ export default function Products() {
   };
 
   return (
-    <div className="container-fluid d-flex flex-column min-vh-100">
+    <div className="container-fluid d-flex flex-column min-vh-100 px-0">
       {/* Cabeçalho */}
-      {/* Botão Sair flutuante no topo direito */}
-      <div className="position-absolute top-0 end-0 m-4">
-        <button 
-          onClick={handleLogout}
-          className="btn btn-outline-danger"
-        >
-          <i className="bi bi-box-arrow-right me-2"></i>
-          Sair
+      <div className="container d-flex justify-content-end gap-2 my-2 px-3">
+        <button onClick={() => navigate("/usuario")} className="btn btn-outline-primary btn-sm">
+          <i className="bi bi-person me-1"></i>Início
+        </button>
+        <button onClick={handleLogout} className="btn btn-outline-danger btn-sm">
+          <i className="bi bi-box-arrow-right me-1"></i>Sair
         </button>
       </div>
-      <header className="text-center my-4 mt-4">
-        <h1 className="display-6 fw-bold">Gestão de Produtos</h1>
+      
+      <header className="text-center my-3 px-3">
+        <h1 className="h4 fw-bold">Gestão de Produtos</h1>
       </header>
 
       {/* Área Principal */}
-      <main className="flex-grow-1 d-flex flex-column justify-content-center">
+      <main className="flex-grow-1 d-flex flex-column justify-content-center px-3">
         {/* Container da Tabela */}
-        <div className="container">
+        <div className="container-fluid px-0">
           {/* Botões */}
           <div className="d-flex justify-content-between mb-3">
-            <div></div> {/* Espaço vazio para alinhamento */}
+            <div></div>
             <div className="d-flex gap-2">
-              <button 
-                onClick={() => openModal()}
-                className="btn btn-primary"
-              >
-                <i className="bi bi-plus-lg me-2"></i>
-                Novo Produto
+              <button onClick={() => openModal()} className="btn btn-primary btn-sm">
+                <i className="bi bi-plus-lg me-1"></i>Novo Produto
               </button>
             </div>
           </div>
 
           {/* Tabela */}
           <div className="card shadow">
-            <div className="card-body">
+            <div className="card-body p-0">
               <div className="table-responsive">
                 <table className="table table-striped table-hover m-0">
                   <thead>
                     <tr className="text-center">
                       <th>Nome</th>
-                      <th>Descrição</th>
+                      <th className="d-none d-sm-table-cell">Descrição</th>
                       <th>Preço</th>
                       <th>Status</th>
-                      <th>Estoque</th>
+                      <th className="d-none d-sm-table-cell">Estoque</th>
                       <th>Ações</th>
                     </tr>
                   </thead>
@@ -195,23 +191,31 @@ export default function Products() {
                       products.map((p) => (
                         <tr className="text-center" key={p.id}>
                           <td><strong>{p.name}</strong></td>
-                          <td>{p.description}</td>
+                          <td className="d-none d-sm-table-cell">{p.description}</td>
                           <td>R$ {p.price}</td>
-                          <td>{p.status === 1 ? 'Em estoque' : p.status === 2 ? 'Em reposição' : 'Em falta'}</td>
-                          <td>{p.stock_quantity}</td>
                           <td>
-                            <button 
-                              onClick={() => openModal(p)}
-                              className="btn btn-sm btn-warning me-2"
-                            >
-                              <i className="bi bi-pencil me-1"></i> Editar
-                            </button>
-                            <button 
-                              onClick={() => handleDelete(p.id)}
-                              className="btn btn-sm btn-danger"
-                            >
-                              <i className="bi bi-trash me-1"></i> Excluir
-                            </button>
+                            <span style={{
+                                color: 
+                                p.status === 1 ? 'green' :
+                                p.status === 2 ? '#FFA500' : 
+                                'red',
+                                fontWeight: 'bold'
+                                }}>
+                              {p.status === 1 ? 'Em estoque' : p.status === 2 ? 'Em reposição' : 'Em falta'}
+                            </span>
+                          </td>
+                          <td className="d-none d-sm-table-cell">{p.status === 1 ? p.stock_quantity : 0}</td>
+                          <td>
+                            <div className="d-flex justify-content-center gap-1">
+                              <button onClick={() => openModal(p)} className="btn btn-sm btn-warning">
+                                <i className="bi bi-pencil"></i>
+                                <span className="d-none d-sm-inline ms-1">Editar</span>
+                              </button>
+                              <button onClick={() => handleDelete(p.id)} className="btn btn-sm btn-danger">
+                                <i className="bi bi-trash"></i>
+                                <span className="d-none d-sm-inline ms-1">Excluir</span>
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))
@@ -240,5 +244,5 @@ export default function Products() {
         product={editing}
       />
     </div>
-  );
+  )
 }

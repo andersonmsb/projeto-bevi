@@ -5,7 +5,7 @@ export default function ProductForm({ onSubmit, product, show, onClose }) {
     name: "",
     description: "",
     price: "",
-    status: 1, // 1-Em estoque, 2-Em reposição, 3-Em falta
+    status: 1,
     stock_quantity: ""
   });
 
@@ -62,10 +62,10 @@ export default function ProductForm({ onSubmit, product, show, onClose }) {
 
   return (
     <div className={`modal fade ${show ? "show d-block" : ""}`} style={{
-      display: show ? 'flex' : 'none',       // Flex para centralizar
-      alignItems: 'center',                  // Centraliza vertical
-      justifyContent: 'center',              // Centraliza horizontal
-      backgroundColor: 'rgba(0,0,0,0.5)',    // Fundo escuro
+      display: show ? 'flex' : 'none',       
+      alignItems: 'center',                 
+      justifyContent: 'center',             
+      backgroundColor: 'rgba(0,0,0,0.5)',   
       position: 'fixed',
       top: 0,
       left: 0,
@@ -146,7 +146,6 @@ export default function ProductForm({ onSubmit, product, show, onClose }) {
               <div className="mb-4">
                 <label htmlFor="stock_quantity" className="form-label">
                   Quantidade em Estoque
-                  {formData.status === 1 && <span className="text-danger">*</span>}
                 </label>
                 <input
                   type="number"
