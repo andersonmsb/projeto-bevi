@@ -37,8 +37,8 @@ npm install
 npm start
 ```
 ### Rodar os testes
-```npm test
-```
+npm test
+
 
 
 
