@@ -22,13 +22,13 @@ sistema web feito em **React.js** que permite o gerenciamento de produtos com au
 - **Jest + React Testing Library**
 - **Babel + Webpack (via CRA)**
 
+### Requisitos
+- **Node.js (v18 ou superior)**
+- **NPM ou Yarn**
+
 ### Como rodar o projeto
 
-### Requisitos
-**Node.js (v18 ou superior)**
-**NPM ou Yarn**
-
-### 1. Clone o repositório
+### Clone o repositório
 
 ```bash
 git clone https://github.com/andersonmsb/projeto-bevi
